@@ -112,6 +112,10 @@ fn main() -> Result<()> {
             let migrations = Migrations::from_directory(&source)?;
 
             let mut conn = Connection::open(&db_path)?;
+
+            conn.pragma_update(None, "journal_mode", "WAL")?;
+            conn.pragma_update(None, "foreign_keys", "ON")?;
+
             if let Some(version) = n {
                 let cur_version: usize = migrations.current_version(&conn)?.into();
                 migrations.to_version(&mut conn, cur_version + version)?;
@@ -123,6 +127,10 @@ fn main() -> Result<()> {
             let migrations = Migrations::from_directory(&source)?;
 
             let mut conn = Connection::open(db_path)?;
+
+            conn.pragma_update(None, "journal_mode", "WAL")?;
+            conn.pragma_update(None, "foreign_keys", "ON")?;
+
             if let Some(steps_down) = n {
                 let cur_version: usize = migrations.current_version(&conn)?.into();
                 let end_version = cur_version
