@@ -1,2 +1,0 @@
-source_path: ./migrations
-database_path: ./db.sqlite
